@@ -1,0 +1,14 @@
+{
+    "name": "wtweb/widgetbundle",
+    "description": "Adds the possibility to add standalone widgets to your application",
+    "authors": [
+        {
+            "name": "Willem Turkstra",
+            "email": "willemturkstra@hotmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/symfony": "3.3.*"
+    }
+}
