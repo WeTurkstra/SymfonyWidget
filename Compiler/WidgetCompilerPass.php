@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 /**
  * Class WidgetCompilerPass
@@ -30,6 +31,11 @@ class WidgetCompilerPass implements CompilerPassInterface
         $widgetTwigExtensionDefinition->setArguments(array(new Reference('wtweb.registry.widget')));
         $widgetTwigExtensionDefinition->addTag('twig.extension');
         $container->setDefinition('widget.twig.widget', $widgetTwigExtensionDefinition);
+
+        $widgetResponseEvent = new Definition('WTWeb\WidgetBundle\Listener\GetResponseEventListener');
+        $widgetResponseEvent->setArguments(array(new Reference('wtweb.registry.widget')));
+        $widgetResponseEvent->addTag('kernel.event_listener', ['event' => 'kernel.request', 'method' => 'onKernelRequest']);
+        $container->setDefinition('wtweb.event.kernel.request', $widgetResponseEvent);
 
         $taggedServices = $container->findTaggedServiceIds('twig.widget');
 
